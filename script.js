@@ -11,7 +11,11 @@ $(function () {
   var saveButton = $('.saveBtn');
 
   saveButton.on('click', function () {
-    
+    var textArea = $(this).siblings('textarea').val()
+    console.log(textArea);
+    var parent = $(this).parent().attr('id')
+    console.log(parent);
+    localStorage.setItem(parent, textArea);
   })
   
   // TODO: Add code to apply the past, present, or future class to each time
@@ -19,10 +23,27 @@ $(function () {
   // attribute of each time-block be used to conditionally add or remove the
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
-  //
+  var timeBlock = $('.time-block');
+  var currentHour = dayjs().hour();
+  timeBlock.each(function () {
+    var timeBlockId = $(this).attr('id').split('-')[1]
+    console.log(timeBlockId);
+    if (currentHour > timeBlockId) {
+      $(this).addClass('past');
+    } 
+    if (currentHour < timeBlockId) {
+      $(this).addClass('future');
+    }
+    if (currentHour == timeBlockId) {
+      $(this).addClass('present');
+    }
+  })
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
-  //
+  $('#hour-9').children('textarea').val(localStorage.getItem('hour-9'));
+  // copy and paste code and change the value (ex change hour to 10 and so on)
   // TODO: Add code to display the current date in the header of the page.
+  var today = dayjs();
+  $('#currentDay').text(today.format('dddd, MMMM D'))
 });
